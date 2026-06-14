@@ -12,6 +12,7 @@ use pyo3::types::PyBytes;
 pub struct PyArray {
     pub dtype: DType,
     pub shape: Vec<u64>,
+    /// Little endian representation of the array data.
     pub data: Vec<u8>,
 }
 
