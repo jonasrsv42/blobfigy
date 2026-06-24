@@ -164,5 +164,9 @@ pub fn value_to_py<'py>(py: Python<'py>, view: &ValueView<'_>) -> PyResult<Bound
             }
             Ok(list.into_any())
         }
+        // Secrets are redaction, not encryption: the bytes are plaintext and
+        // programmatic access sees through them (only printing redacts). Reading
+        // a blob into Python is programmatic access, so expose the inner value.
+        ValueView::Secret(inner) => value_to_py(py, inner),
     }
 }
