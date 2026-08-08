@@ -2,7 +2,7 @@
 
 use super::array::PyArray;
 use super::file::PyFile;
-use blobfig::{Array, DType, File, List, Object, ObjectNode, Value, ValueView};
+use blobfig::{Array, DType, File, ObjectNode, Value, ValueView};
 use numpy::{PyArray1, PyArrayMethods, PyUntypedArrayMethods};
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
@@ -110,7 +110,7 @@ pub fn py_to_value(obj: &Bound<'_, PyAny>) -> PyResult<Value> {
             let val = py_to_value(&v)?;
             entries.push((key, val));
         }
-        return Ok(Value::Object(Object::new(entries)));
+        return Ok(Value::object(entries));
     }
 
     // Check for list -> List
@@ -119,7 +119,7 @@ pub fn py_to_value(obj: &Bound<'_, PyAny>) -> PyResult<Value> {
         for item in l.iter() {
             items.push(py_to_value(&item)?);
         }
-        return Ok(Value::List(List::new(items)));
+        return Ok(Value::list(items));
     }
 
     Err(PyValueError::new_err(format!(
